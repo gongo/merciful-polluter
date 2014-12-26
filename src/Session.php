@@ -1,7 +1,7 @@
 <?php
 namespace Gongo\MercifulPolluter;
 
-class Session extends Base
+class Session
 {
     public function pollute()
     {
