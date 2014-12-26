@@ -80,7 +80,18 @@ If use the session, call `Gongo\MercifulPolluter\Session::pollute()` **after** `
 
 ```php
 session_start();
+
+/**
+ * $_SESSION['user_id'] = 'gongo'
+ */
+
 (new Gongo\MercifulPolluter\Session)->pollute();
+
+var_dump($user_id); // string(5) "gongo"
+
+// Reference global variables to session.
+$user_id = 'taro';
+var_dump($_SESSION['user_id']); // string(4) "taro"
 ```
 
 ### Emulate `magic_quotes_gpc`
