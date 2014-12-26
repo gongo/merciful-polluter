@@ -15,4 +15,12 @@ class Session extends Base
 
         $this->injectToGlobal($_SESSION);
     }
+
+    protected function injectToGlobal(array $theVariables)
+    {
+        foreach ($theVariables as $name => $value) {
+            $GLOBALS[$name] = $value;
+            $_SESSION[$name] =& $GLOBALS[$name];
+        }
+    }
 }
