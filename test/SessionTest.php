@@ -28,6 +28,10 @@ class SessionTest extends PHPUnit_Framework_TestCase
         global $userId, $userName;
         $this->assertEquals($_SESSION['userId'], $userId);
         $this->assertEquals($_SESSION['userName'], $userName);
+
+        // Reference global to session
+        $userId = '99999';
+        $this->assertEquals('99999', $_SESSION['userId']);
     }
 
     /**

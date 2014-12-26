@@ -1,7 +1,7 @@
 <?php
 namespace Gongo\MercifulPolluter;
 
-class Request extends Base
+class Request
 {
     private $magicQuotesGpc = false;
     
@@ -124,5 +124,12 @@ class Request extends Base
                 $value = addslashes($value);
             }
         );
+    }
+
+    protected function injectToGlobal(array $theVariables)
+    {
+        foreach ($theVariables as $name => $value) {
+            $GLOBALS[$name] = $value;
+        }
     }
 }
