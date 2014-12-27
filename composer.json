@@ -1,6 +1,6 @@
 {
     "name": "gongo/merciful-polluter",
-    "description": "Description",
+    "description": "Emulate `register_globals` and `magic_quotes_gpc` in PHP 5.4 or higher",
     "version": "0.0.1",
     "keywords": ["register_globals", "magic_quotes_gpc"],
     "homepage": "https://github.com/gongo/merciful-polluter",
