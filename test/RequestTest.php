@@ -46,6 +46,35 @@ class RequestTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($_COOKIE['session_id'], $session_id);
     }
 
+    /**
+     * <input type="file" name="music[]">
+     * <input type="file" name="music[]">
+     * <input type="file" name="movie">
+     */
+    public function testPollutePostMultipleFile()
+    {
+        $_FILES['music'] = array(
+            'tmp_name' => array('/tmp/aqwerft', '/tmp/gyhujiko'),
+            'size'     => array(123, 456)
+        );
+
+        $_FILES['movie'] = array(
+            'tmp_name' => '/tmp/xdcfvgbhjn',
+            'size'     => 789
+        );
+
+        $this->setVariablesOrder('EGPCS');
+        $this->object->pollute();
+
+        global $music, $music_size;
+        $this->assertEquals($_FILES['music']['tmp_name'], $music);
+        $this->assertEquals($_FILES['music']['size'], $music_size);
+
+        global $movie, $movie_size;
+        $this->assertEquals($_FILES['movie']['tmp_name'], $movie);
+        $this->assertEquals($_FILES['movie']['size'], $movie_size);
+    }
+
     public function testPolluteOverwriteVariableOrder()
     {
         $_GET['id'] = 'get';
