@@ -1,7 +1,7 @@
 <?php
 namespace Gongo\MercifulPolluter;
 
-class Session
+class Session extends Base
 {
     public function pollute()
     {
@@ -19,6 +19,10 @@ class Session
     protected function injectToGlobal(array $theVariables)
     {
         foreach ($theVariables as $name => $value) {
+            if ($this->ignoringVariable($name)) {
+                continue;
+            }
+
             $GLOBALS[$name] = $value;
             $_SESSION[$name] =& $GLOBALS[$name];
         }

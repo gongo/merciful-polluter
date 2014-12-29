@@ -42,4 +42,24 @@ class SessionTest extends PHPUnit_Framework_TestCase
     {
         $this->object->pollute();
     }
+
+    /**
+     * @see https://github.com/gongo/merciful-polluter/issues/2
+     */
+    public function testPolluteSpecifiedBlacklist()
+    {
+        session_start();
+
+        $_SESSION['_GET'] = '1234';
+        $_SESSION['_POST'] = array('userId', 'Evil');
+        $_SESSION['userId'] = 'Jack';
+
+        $this->object->pollute();
+
+        $this->assertNotEquals($_SESSION['_GET'], $_GET);
+        $this->assertNotEquals($_SESSION['_POST'], $_POST);
+
+        global $userId;
+        $this->assertEquals('Jack', $userId);
+    }
 }
