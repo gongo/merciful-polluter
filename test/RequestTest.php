@@ -107,6 +107,32 @@ class RequestTest extends PHPUnit_Framework_TestCase
         $this->assertEquals("\'Okinawa\'", $secret_info['address']);
         $this->assertEquals("\'Okinawa\'", $_GET['secret_info']['address']);
     }
+
+    /**
+     * http://example.com/?foo=123&bar=baz&_GET[foo]=Cracked&_GET[bar]=Cracked
+     *
+     * @see https://github.com/gongo/merciful-polluter/issues/2
+     */
+    public function testPolluteSpecifiedBlacklist()
+    {
+        $_GET['foo']  = '123';
+        $_GET['bar']  = 'baz';
+        $_GET['_GET'] = array(
+            'foo' => 'Cracked',
+            'bar' => 'Cracked'
+        );
+
+        $this->setVariablesOrder('g');
+        $this->object->pollute();
+
+        global $foo;
+        $this->assertEquals('123', $_GET['foo']);
+        $this->assertEquals('123', $foo);
+
+        global $bar;
+        $this->assertEquals('baz', $_GET['bar']);
+        $this->assertEquals('baz', $bar);
+    }
     
     private function setVariablesOrder($value)
     {
