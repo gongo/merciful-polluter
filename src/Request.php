@@ -101,6 +101,8 @@ class Request extends Base
 
             $injectedFlag[$name] = true;
         }
+
+        $_REQUEST = array_merge($_GET, $_POST, $_COOKIE);
     }
 
     /**

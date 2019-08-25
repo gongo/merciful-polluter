@@ -106,6 +106,8 @@ class RequestTest extends PHPUnit_Framework_TestCase
         $this->assertEquals("baz\'piyo", $_GET['secret_id']);
         $this->assertEquals("\'Okinawa\'", $secret_info['address']);
         $this->assertEquals("\'Okinawa\'", $_GET['secret_info']['address']);
+        $this->assertEquals("baz\'piyo", $_REQUEST['secret_id']);
+        $this->assertEquals("\'Okinawa\'", $_REQUEST['secret_info']['address']);
     }
 
     /**
