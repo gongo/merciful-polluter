@@ -90,10 +90,14 @@ class RequestTest extends PHPUnit_Framework_TestCase
     public function testPolluteEnableMagicQuotesGpc()
     {
         $_ENV['TOKEN'] = "foo'bar";
-        $_GET['secret_id'] = "baz'piyo";
-        $_GET['secret_info'] = array('address' => "'Okinawa'");
-        
-        $this->setVariablesOrder('eg');
+        $_GET['name_1'] = "baz'piyo_get";
+        $_GET['personal_info_1'] = array('address' => "'Okinawa'");
+        $_POST['name_2'] = "baz'piyo_post";
+        $_POST['personal_info_2'] = array('address' => "'Tokyo'");
+        $_COOKIE['name_3'] = "baz'piyo_cookie";
+        $_COOKIE['personal_info_3'] = array('address' => "'Kanagawa'");
+
+        $this->setVariablesOrder('egpc');
         $this->object->enableMagicQuotesGpc();
         $this->object->pollute();
 
@@ -101,13 +105,28 @@ class RequestTest extends PHPUnit_Framework_TestCase
         $this->assertEquals("foo'bar", $TOKEN);
         $this->assertEquals("foo'bar", $_ENV['TOKEN']);
 
-        global $secret_id, $secret_info;
-        $this->assertEquals("baz\'piyo", $secret_id);
-        $this->assertEquals("baz\'piyo", $_GET['secret_id']);
-        $this->assertEquals("\'Okinawa\'", $secret_info['address']);
-        $this->assertEquals("\'Okinawa\'", $_GET['secret_info']['address']);
-        $this->assertEquals("baz\'piyo", $_REQUEST['secret_id']);
-        $this->assertEquals("\'Okinawa\'", $_REQUEST['secret_info']['address']);
+        global $name_1, $personal_info_1, $name_2, $personal_info_2, $name_3, $personal_info_3;
+        $this->assertEquals("baz\'piyo_get", $name_1);
+        $this->assertEquals("baz\'piyo_get", $_GET['name_1']);
+        $this->assertEquals("\'Okinawa\'", $personal_info_1['address']);
+        $this->assertEquals("\'Okinawa\'", $_GET['personal_info_1']['address']);
+
+        $this->assertEquals("baz\'piyo_post", $name_2);
+        $this->assertEquals("baz\'piyo_post", $_POST['name_2']);
+        $this->assertEquals("\'Tokyo\'", $personal_info_2['address']);
+        $this->assertEquals("\'Tokyo\'", $_POST['personal_info_2']['address']);
+
+        $this->assertEquals("baz\'piyo_cookie", $name_3);
+        $this->assertEquals("baz\'piyo_cookie", $_COOKIE['name_3']);
+        $this->assertEquals("\'Kanagawa\'", $personal_info_3['address']);
+        $this->assertEquals("\'Kanagawa\'", $_COOKIE['personal_info_3']['address']);
+
+        $this->assertEquals("baz\'piyo_get", $_REQUEST['name_1']);
+        $this->assertEquals("\'Okinawa\'", $_REQUEST['personal_info_1']['address']);
+        $this->assertEquals("baz\'piyo_post", $_REQUEST['name_2']);
+        $this->assertEquals("\'Tokyo\'", $_REQUEST['personal_info_2']['address']);
+        $this->assertEquals("baz\'piyo_cookie", $_REQUEST['name_3']);
+        $this->assertEquals("\'Kanagawa\'", $_REQUEST['personal_info_3']['address']);
     }
 
     /**
