@@ -79,18 +79,21 @@ class Request extends Base
                 case 'g':
                     if ($this->magicQuotesGpc) {
                         $this->addSlashesRecursive($_GET);
+                        $_REQUEST = array_merge($_REQUEST, $_GET);
                     }
                     $this->injectToGlobal($_GET);
                     break;
                 case 'p':
                     if ($this->magicQuotesGpc) {
                         $this->addSlashesRecursive($_POST);
+                        $_REQUEST = array_merge($_REQUEST, $_POST);
                     }
                     $this->injectToGlobal($_POST);
                     break;
                 case 'c':
                     if ($this->magicQuotesGpc) {
                         $this->addSlashesRecursive($_COOKIE);
+                        $_REQUEST = array_merge($_REQUEST, $_COOKIE);
                     }
                     $this->injectToGlobal($_COOKIE);
                     break;
@@ -101,8 +104,6 @@ class Request extends Base
 
             $injectedFlag[$name] = true;
         }
-
-        $_REQUEST = array_merge($_GET, $_POST, $_COOKIE);
     }
 
     /**
