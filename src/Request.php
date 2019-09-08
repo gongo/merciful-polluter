@@ -133,7 +133,11 @@ class Request extends Base
                 continue;
             }
 
-            $GLOBALS[$name] = $value;
+            if (is_array($GLOBALS[$name]) && is_array($value)) {
+                $GLOBALS[$name] = array_replace_recursive($GLOBALS[$name], $value);
+            } else {
+                $GLOBALS[$name] = $value;
+            }
         }
     }
 }
