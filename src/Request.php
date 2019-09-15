@@ -56,9 +56,6 @@ class Request extends Base
      * Inject `EGPCS` to global variables.
      *
      * `EGPCS` means $_ENV, $_GET, $_POST, $_COOKIE and $_SERVER.
-     *
-     * If beforehand call `enableMagicQuotesGpc()`,
-     * applies `addslashes` $_GET, $_POST, $_COOKIE and those inject variables.
      */
     private function injectEGPCSToGlobal()
     {
