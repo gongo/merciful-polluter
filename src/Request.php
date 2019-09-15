@@ -7,6 +7,9 @@ class Request extends Base
     
     public function pollute()
     {
+        if ($this->magicQuotesGpc) {
+            $this->applyMagicQuotesGpc();
+        }
         $this->injectFileToGlobal();
         $this->injectEGPCSToGlobal();
     }
@@ -77,21 +80,12 @@ class Request extends Base
                     $this->injectToGlobal($_ENV);
                     break;
                 case 'g':
-                    if ($this->magicQuotesGpc) {
-                        $this->addSlashesRecursive($_GET);
-                    }
                     $this->injectToGlobal($_GET);
                     break;
                 case 'p':
-                    if ($this->magicQuotesGpc) {
-                        $this->addSlashesRecursive($_POST);
-                    }
                     $this->injectToGlobal($_POST);
                     break;
                 case 'c':
-                    if ($this->magicQuotesGpc) {
-                        $this->addSlashesRecursive($_COOKIE);
-                    }
                     $this->injectToGlobal($_COOKIE);
                     break;
                 case 's':
@@ -139,5 +133,13 @@ class Request extends Base
                 $GLOBALS[$name] = $value;
             }
         }
+    }
+
+    private function applyMagicQuotesGpc()
+    {
+        $this->addSlashesRecursive($_GET);
+        $this->addSlashesRecursive($_POST);
+        $this->addSlashesRecursive($_COOKIE);
+        $this->addSlashesRecursive($_REQUEST);
     }
 }
