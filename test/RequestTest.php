@@ -7,7 +7,7 @@ use Gongo\MercifulPolluter\Request;
 class RequestTest extends PHPUnit_Framework_TestCase
 {
     private $object = null;
-    
+
     protected function setUp()
     {
         $this->object = $this->getMockBuilder('Gongo\MercifulPolluter\Request')
@@ -26,7 +26,7 @@ class RequestTest extends PHPUnit_Framework_TestCase
         $_POST['article_id'] = 99999;
         $_GET['secret_info'] = array('address' => "'Okinawa'");
         $_COOKIE['session_id'] = 'SESSIONID';
-        
+
         $this->setVariablesOrder('EGPCS');
         $this->object->pollute();
 
@@ -79,12 +79,94 @@ class RequestTest extends PHPUnit_Framework_TestCase
     {
         $_GET['id'] = 'get';
         $_POST['id'] = 'post';
-        
+
         $this->setVariablesOrder('gpg');
         $this->object->pollute();
 
         global $id;
         $this->assertEquals($_POST['id'], $id);
+    }
+
+    public function testPolluteOverwriteArrayToArray()
+    {
+        $_GET['foo'] = array('bar' => 'baz');
+        $_POST['foo'] = array('spam' => 'ham');
+
+        $this->setVariablesOrder('gp');
+        $this->object->pollute();
+
+        global $foo;
+        $this->assertEquals(array('bar' => 'baz', 'spam' => 'ham'), $foo);
+    }
+
+    public function testPolluteOverwriteNestedArrayToNestedArray()
+    {
+        $_GET['foo'] = array('bar' => array('baz' => '123'));
+        $_POST['foo'] = array('bar' => array('spam' => 'ham'));
+
+        $this->setVariablesOrder('gp');
+        $this->object->pollute();
+
+        global $foo;
+        $this->assertEquals(
+            array(
+                'bar' => array(
+                    'baz' => '123',
+                    'spam' => 'ham'
+                )
+            ),
+            $foo
+        );
+    }
+
+    public function testPolluteOverwriteScalarToArray()
+    {
+        $_GET['foo'] = 'bar';
+        $_POST['foo'] = array('spam' => 'ham');
+
+        $this->setVariablesOrder('gp');
+        $this->object->pollute();
+
+        global $foo;
+        $this->assertEquals(array('spam' => 'ham'), $foo);
+    }
+
+    public function testPolluteOverwriteArrayToScalar()
+    {
+        $_GET['foo'] = array('bar' => 'baz');
+        $_POST['foo'] = 'ham';
+
+        $this->setVariablesOrder('gp');
+        $this->object->pollute();
+
+        global $foo;
+        $this->assertEquals('ham', $foo);
+    }
+
+    public function testPolluteOverwriteArrayToScalarToArray()
+    {
+        $_GET['foo'] = array('bar' => 'baz');
+        $_POST['foo'] = 'ham';
+        $_COOKIE['foo'] = array('spam' => 'ham');
+
+        $this->setVariablesOrder('gpc');
+        $this->object->pollute();
+
+        global $foo;
+        $this->assertEquals(array('spam' => 'ham'), $foo);
+    }
+
+    public function testPolluteOverwriteArrayToArrayToScalar()
+    {
+        $_GET['foo'] = array('bar' => 'baz');
+        $_POST['foo'] = array('spam' => 'ham');
+        $_COOKIE['foo'] = 'ham';
+
+        $this->setVariablesOrder('gpc');
+        $this->object->pollute();
+
+        global $foo;
+        $this->assertEquals('ham', $foo);
     }
 
     public function testPolluteEnableMagicQuotesGpc()
@@ -154,7 +236,7 @@ class RequestTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('baz', $_GET['bar']);
         $this->assertEquals('baz', $bar);
     }
-    
+
     private function setVariablesOrder($value)
     {
         $this->object->method('getInjectVariables')
