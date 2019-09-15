@@ -178,6 +178,7 @@ class RequestTest extends PHPUnit_Framework_TestCase
         $_POST['personal_info_2'] = array('address' => "'Tokyo'");
         $_COOKIE['name_3'] = "baz'piyo_cookie";
         $_COOKIE['personal_info_3'] = array('address' => "'Kanagawa'");
+        $_REQUEST = array_merge($_GET, $_POST, $_COOKIE);
 
         $this->setVariablesOrder('egpc');
         $this->object->enableMagicQuotesGpc();
