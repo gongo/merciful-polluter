@@ -7,7 +7,7 @@ class Request extends Base
     
     public function pollute()
     {
-        if (magicQuotesGpc) {
+        if ($this->magicQuotesGpc) {
             $this->applyMagicQuotesGpc();
         }
         $this->injectFileToGlobal();
