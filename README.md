@@ -24,7 +24,7 @@ Usage
  * example.com/?foo=3&bar=12
  */
 
-(new Gongo\MercifulPolluter\Requst)->pollute();
+(new Gongo\MercifulPolluter\Request)->pollute();
 
 global $foo, $bar;
 var_dump($foo, $bar);
@@ -71,7 +71,7 @@ Add this lines to your application's entry point (like in `auto_prepend_file`):
 
 ```php
 <?php
-$request = new Gongo\MercifulPolluter\Requst;
+$request = new Gongo\MercifulPolluter\Reqeust;
 $request->pollute();
 
 // main routine...
@@ -97,7 +97,7 @@ var_dump($_SESSION['user_id']); // string(4) "taro"
 
 ### Emulate `magic_quotes_gpc`
 
-If want to apply `magic_quotes_gpc`, call `Gongo\MercifulPolluter\Requst::enableMagicQuotesGpc()`:
+If want to apply `magic_quotes_gpc`, call `Gongo\MercifulPolluter\Request::enableMagicQuotesGpc()`:
 
 ```php
 <?php
@@ -105,7 +105,7 @@ If want to apply `magic_quotes_gpc`, call `Gongo\MercifulPolluter\Requst::enable
  * example.com/?foo=1'2'3
  */
 
-$request = new Gongo\MercifulPolluter\Requst;
+$request = new Gongo\MercifulPolluter\Request;
 $request->enableMagicQuotesGpc();
 $request->pollute();
 
