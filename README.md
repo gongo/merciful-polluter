@@ -71,7 +71,7 @@ Add this lines to your application's entry point (like in `auto_prepend_file`):
 
 ```php
 <?php
-$request = new Gongo\MercifulPolluter\Reqeust;
+$request = new Gongo\MercifulPolluter\Request;
 $request->pollute();
 
 // main routine...
