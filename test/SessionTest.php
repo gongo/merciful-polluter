@@ -35,7 +35,7 @@ class SessionTest extends TestCase
     }
 
     /**
-     * @expectedException PHPUnit\Framework\Error\Warning
+     * @expectedException PHPUnit_Framework_Error_Warning
      * @expectedExceptionMessage The session not yet started (Ignoring)
      */
     public function testPolluteSessionNotStarted()
