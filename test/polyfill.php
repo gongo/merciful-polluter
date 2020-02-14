@@ -10,7 +10,6 @@ namespace PHPUnit\Framework
         abstract class TestCase extends PHPUnit_Framework_TestCase
         {
         }
-    } else {
-        class_alias('PHPUnit\Framework\Error\Warning', 'PHPUnit_Framework_Error_Warning');
+        class_alias('PHPUnit_Framework_Error_Warning', 'PHPUnit\Framework\Error\Warning');
     }
 }
