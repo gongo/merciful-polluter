@@ -4,6 +4,9 @@ namespace Gongo\MercifulPolluter\Test;
 use PHPUnit\Framework\TestCase;
 use Gongo\MercifulPolluter\Request;
 
+/**
+ * @backupGlobals enabled
+ */
 class RequestTest extends TestCase
 {
     private $object = null;
