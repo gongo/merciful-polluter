@@ -18,6 +18,7 @@ matrix:
       dist: trusty
   allow_failures:
     - php: nightly
+    - php: hhvm-3.30
 
 sudo: false
 cache:
