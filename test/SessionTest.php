@@ -1,16 +1,16 @@
 <?php
 namespace Gongo\MercifulPolluter\Test;
 
-use \PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 use Gongo\MercifulPolluter\Session;
 
 /**
  * @runTestsInSeparateProcesses
  */
-class SessionTest extends PHPUnit_Framework_TestCase
+class SessionTest extends TestCase
 {
     private $object = null;
-    
+
     protected function setUp()
     {
         $this->object = new Session;
@@ -19,7 +19,7 @@ class SessionTest extends PHPUnit_Framework_TestCase
     public function testPollute()
     {
         session_start();
-        
+
         $_SESSION['userId'] = '1234';
         $_SESSION['userName'] = 'Jack';
 

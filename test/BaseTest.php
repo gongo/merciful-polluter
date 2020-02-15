@@ -1,7 +1,7 @@
 <?php
 namespace Gongo\MercifulPolluter\Test;
 
-use \PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 use Gongo\MercifulPolluter\Base;
 
 class Polluter extends Base
@@ -12,10 +12,10 @@ class Polluter extends Base
     }
 }
 
-class BaseTest extends PHPUnit_Framework_TestCase
+class BaseTest extends TestCase
 {
     private $object = null;
-    
+
     protected function setUp()
     {
         $this->object = new Polluter;
