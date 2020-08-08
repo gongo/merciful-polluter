@@ -3,6 +3,9 @@ namespace Gongo\MercifulPolluter;
 
 class Session extends Base
 {
+    /**
+     * @return void
+     */
     public function pollute()
     {
         if (session_id() === '') {
@@ -16,6 +19,9 @@ class Session extends Base
         $this->injectToGlobal($_SESSION);
     }
 
+    /**
+     * @return void
+     */
     protected function injectToGlobal(array $theVariables)
     {
         foreach ($theVariables as $name => $value) {

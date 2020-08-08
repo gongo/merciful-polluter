@@ -5,6 +5,7 @@ class Base
 {
     /**
      * @see http://php.net/manual/en/reserved.variables.php
+     * @var string[]
      */
     private static $ignoringVariableNames = array(
         'GLOBALS',
@@ -23,6 +24,10 @@ class Base
         'argv',
     );
 
+    /**
+     * @param string $theKey
+     * @return bool
+     */
     protected function ignoringVariable($theKey)
     {
         return in_array($theKey, self::$ignoringVariableNames);

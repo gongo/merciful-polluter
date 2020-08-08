@@ -3,8 +3,12 @@ namespace Gongo\MercifulPolluter;
 
 class Request extends Base
 {
+    /** @var bool */
     private $magicQuotesGpc = false;
-    
+
+    /**
+     * @return void
+     */
     public function pollute()
     {
         if ($this->magicQuotesGpc) {
@@ -14,16 +18,22 @@ class Request extends Base
         $this->injectEGPCSToGlobal();
     }
 
+    /**
+     * @return void
+     */
     public function enableMagicQuotesGpc()
     {
         $this->magicQuotesGpc = true;
     }
 
+    /**
+     * @return void
+     */
     public function disableMagicQuotesGpc()
     {
         $this->magicQuotesGpc = false;
     }
-    
+
     /**
      * Inject $_FILES to global variables.
      *
@@ -33,6 +43,7 @@ class Request extends Base
      *     $_FILES['upfile']['size']     => $upfile_size
      *     $_FILES['upfile']['type']     => $upfile_type
      *
+     * @return void
      */
     private function injectFileToGlobal()
     {
@@ -56,6 +67,8 @@ class Request extends Base
      * Inject `EGPCS` to global variables.
      *
      * `EGPCS` means $_ENV, $_GET, $_POST, $_COOKIE and $_SERVER.
+     *
+     * @return void
      */
     private function injectEGPCSToGlobal()
     {
@@ -95,7 +108,7 @@ class Request extends Base
     }
 
     /**
-     * @return  array
+     * @return string[]
      */
     protected function getInjectVariables()
     {
@@ -106,6 +119,9 @@ class Request extends Base
      * Recursively applies `addslashes` to each element of the array recursive.
      *
      * This method is **bang** .
+     *
+     * @param string[] $theVariables
+     * @return void
      */
     private function addSlashesRecursive(&$theVariables)
     {
@@ -117,6 +133,10 @@ class Request extends Base
         );
     }
 
+    /**
+     * @param string[] $theVariables
+     * @return void
+     */
     protected function injectToGlobal(array $theVariables)
     {
         foreach ($theVariables as $name => $value) {
@@ -132,6 +152,9 @@ class Request extends Base
         }
     }
 
+    /**
+     * @return void
+     */
     private function applyMagicQuotesGpc()
     {
         $this->addSlashesRecursive($_GET);
