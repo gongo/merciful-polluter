@@ -11,7 +11,7 @@ Description
 --------------------
 
 In PHP 5.4, violent directives (`register_globals` and `magic_quotes_gpc`) has been removed.
-But system that depends on them still running lot maybe.
+But there are systems that may still depend on them.
 
 This library reproduce these features in PHP 5.4 and later. **Salvation**
 
