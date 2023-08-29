@@ -11,13 +11,10 @@ class SessionTest extends TestCase
 {
     private $object = null;
 
-    protected function setUp()
-    {
-        $this->object = new Session;
-    }
-
     public function testPollute()
     {
+        $this->object = new Session;
+
         session_start();
 
         $_SESSION['userId'] = '1234';
@@ -35,11 +32,20 @@ class SessionTest extends TestCase
     }
 
     /**
+     * Below annotations are for PHPUnit < 9.0
+     *
      * @expectedException PHPUnit_Framework_Error_Warning
      * @expectedExceptionMessage The session not yet started (Ignoring)
      */
     public function testPolluteSessionNotStarted()
     {
+        // For PHPUnit >= 9.0
+        if (method_exists($this, 'expectWarning')) {
+            $this->expectWarning();
+            $this->expectWarningMessage('The session not yet started (Ignoring)');
+        }
+        
+        $this->object = new Session;
         $this->object->pollute();
     }
 
@@ -48,6 +54,8 @@ class SessionTest extends TestCase
      */
     public function testPolluteSpecifiedBlacklist()
     {
+        $this->object = new Session;
+
         session_start();
 
         $_SESSION['_GET'] = '1234';

@@ -16,13 +16,10 @@ class BaseTest extends TestCase
 {
     private $object = null;
 
-    protected function setUp()
-    {
-        $this->object = new Polluter;
-    }
-
     public function testIgnoringVariable()
     {
+        $this->object = new Polluter;
+
         $ignores = array(
             'GLOBALS',
             '_SERVER',
