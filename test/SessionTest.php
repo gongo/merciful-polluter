@@ -32,11 +32,19 @@ class SessionTest extends TestCase
     }
 
     /**
+     * Below annotations are for PHPUnit < 9.0
+     *
      * @expectedException PHPUnit_Framework_Error_Warning
      * @expectedExceptionMessage The session not yet started (Ignoring)
      */
     public function testPolluteSessionNotStarted()
     {
+        // For PHPUnit >= 9.0
+        if (method_exists($this, 'expectWarning')) {
+            $this->expectWarning();
+            $this->expectWarningMessage('The session not yet started (Ignoring)');
+        }
+        
         $this->object = new Session;
         $this->object->pollute();
     }
