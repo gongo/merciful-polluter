@@ -3,7 +3,7 @@ MercifulPolluter
 
 To relieve [register_globals](http://php.net/register_globals) and [magic_quotes_gpc](http://php.net/magic_quotes_gpc) refugees.
 
-[![Build Status](https://travis-ci.org/gongo/merciful-polluter.svg?branch=master)](https://travis-ci.org/gongo/merciful-polluter)
+![CI status](https://github.com/gongo/merciful-polluter/actions/workflows/ci.yml/badge.svg?branch=master)
 [![Coverage Status](https://coveralls.io/repos/gongo/merciful-polluter/badge.png?branch=master)](https://coveralls.io/r/gongo/merciful-polluter?branch=master)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/gongo/merciful-polluter/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/gongo/merciful-polluter/?branch=master)
 
