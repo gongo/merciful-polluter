@@ -11,13 +11,6 @@ class RequestTest extends TestCase
 {
     private $object = null;
 
-    private function setUpMethod()
-    {
-        $this->object = $this->getMockBuilder('Gongo\MercifulPolluter\Request')
-                             ->setMethods(array('getInjectVariables'))
-                             ->getMock();
-    }
-
     public function testPollute()
     {
         $this->setUpMethod();
@@ -262,10 +255,15 @@ class RequestTest extends TestCase
         $this->assertEquals('baz', $bar);
     }
 
+    private function setUpMethod()
+    {
+        $this->object = $this->getMockBuilder('Gongo\MercifulPolluter\Request')
+                             ->setMethods(array('getInjectVariables'))
+                             ->getMock();
+    }
+
     private function setVariablesOrder($value)
     {
-        $this->setUpMethod();
-
         $this->object->method('getInjectVariables')
                      ->willReturn(str_split(strtolower($value)));
     }
