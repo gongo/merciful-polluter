@@ -11,13 +11,10 @@ class SessionTest extends TestCase
 {
     private $object = null;
 
-    protected function setUp()
-    {
-        $this->object = new Session;
-    }
-
     public function testPollute()
     {
+        $this->object = new Session;
+
         session_start();
 
         $_SESSION['userId'] = '1234';
@@ -40,6 +37,7 @@ class SessionTest extends TestCase
      */
     public function testPolluteSessionNotStarted()
     {
+        $this->object = new Session;
         $this->object->pollute();
     }
 
@@ -48,6 +46,8 @@ class SessionTest extends TestCase
      */
     public function testPolluteSpecifiedBlacklist()
     {
+        $this->object = new Session;
+
         session_start();
 
         $_SESSION['_GET'] = '1234';

@@ -11,7 +11,7 @@ class RequestTest extends TestCase
 {
     private $object = null;
 
-    protected function setUp()
+    private function setUpMethod()
     {
         $this->object = $this->getMockBuilder('Gongo\MercifulPolluter\Request')
                              ->setMethods(array('getInjectVariables'))
@@ -20,6 +20,8 @@ class RequestTest extends TestCase
 
     public function testPollute()
     {
+        $this->setUpMethod();
+
         $_FILES['upfile'] = array(
             'tmp_name' => '/tmp/aqwsedrftgyhujik.txt',
             'name'     => 'test.txt',
@@ -56,6 +58,8 @@ class RequestTest extends TestCase
      */
     public function testPollutePostMultipleFile()
     {
+        $this->setUpMethod();
+
         $_FILES['music'] = array(
             'tmp_name' => array('/tmp/aqwerft', '/tmp/gyhujiko'),
             'size'     => array(123, 456)
@@ -80,6 +84,8 @@ class RequestTest extends TestCase
 
     public function testPolluteOverwriteVariableOrder()
     {
+        $this->setUpMethod();
+
         $_GET['id'] = 'get';
         $_POST['id'] = 'post';
 
@@ -92,6 +98,8 @@ class RequestTest extends TestCase
 
     public function testPolluteOverwriteArrayToArray()
     {
+        $this->setUpMethod();
+
         $_GET['foo'] = array('bar' => 'baz');
         $_POST['foo'] = array('spam' => 'ham');
 
@@ -104,6 +112,8 @@ class RequestTest extends TestCase
 
     public function testPolluteOverwriteNestedArrayToNestedArray()
     {
+        $this->setUpMethod();
+
         $_GET['foo'] = array('bar' => array('baz' => '123'));
         $_POST['foo'] = array('bar' => array('spam' => 'ham'));
 
@@ -124,6 +134,8 @@ class RequestTest extends TestCase
 
     public function testPolluteOverwriteScalarToArray()
     {
+        $this->setUpMethod();
+
         $_GET['foo'] = 'bar';
         $_POST['foo'] = array('spam' => 'ham');
 
@@ -136,6 +148,8 @@ class RequestTest extends TestCase
 
     public function testPolluteOverwriteArrayToScalar()
     {
+        $this->setUpMethod();
+
         $_GET['foo'] = array('bar' => 'baz');
         $_POST['foo'] = 'ham';
 
@@ -148,6 +162,8 @@ class RequestTest extends TestCase
 
     public function testPolluteOverwriteArrayToScalarToArray()
     {
+        $this->setUpMethod();
+
         $_GET['foo'] = array('bar' => 'baz');
         $_POST['foo'] = 'ham';
         $_COOKIE['foo'] = array('spam' => 'ham');
@@ -161,6 +177,7 @@ class RequestTest extends TestCase
 
     public function testPolluteOverwriteArrayToArrayToScalar()
     {
+        $this->setUpMethod();
         $_GET['foo'] = array('bar' => 'baz');
         $_POST['foo'] = array('spam' => 'ham');
         $_COOKIE['foo'] = 'ham';
@@ -174,6 +191,8 @@ class RequestTest extends TestCase
 
     public function testPolluteEnableMagicQuotesGpc()
     {
+        $this->setUpMethod();
+
         $_ENV['TOKEN'] = "foo'bar";
         $_GET['name_1'] = "baz'piyo_get";
         $_GET['personal_info_1'] = array('address' => "'Okinawa'");
@@ -222,6 +241,8 @@ class RequestTest extends TestCase
      */
     public function testPolluteSpecifiedBlacklist()
     {
+        $this->setUpMethod();
+
         $_GET['foo']  = '123';
         $_GET['bar']  = 'baz';
         $_GET['_GET'] = array(
@@ -243,6 +264,8 @@ class RequestTest extends TestCase
 
     private function setVariablesOrder($value)
     {
+        $this->setUpMethod();
+
         $this->object->method('getInjectVariables')
                      ->willReturn(str_split(strtolower($value)));
     }
