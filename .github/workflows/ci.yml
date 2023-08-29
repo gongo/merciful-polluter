@@ -43,3 +43,11 @@ jobs:
       run: composer install --prefer-dist --dev
     - name: Run tests
       run: ./vendor/bin/phpunit
+    - name: Update coverage reports
+      env:
+        COVERALLS_REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        # bin file was named `coveralls` until PHP 5.4
+        # see: https://github.com/php-coveralls/php-coveralls/blob/v2.6.0/CHANGELOG.md
+        [[ -f vendor/bin/php-coveralls ]] && COVERALLS_PATH=vendor/bin/php-coveralls || COVERALLS_PATH=vendor/bin/coveralls
+        $COVERALLS_PATH
