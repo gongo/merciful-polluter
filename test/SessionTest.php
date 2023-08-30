@@ -50,7 +50,7 @@ class SessionTest extends TestCase
         $this->object = new Session;
         $this->object->pollute();
 
-        [$errno, $errstr] = $errored;
+        list($errno, $errstr) = $errored;
         $this->assertEquals(E_USER_WARNING, $errno);
         $this->assertEquals('The session not yet started (Ignoring)', $errstr);
     }
