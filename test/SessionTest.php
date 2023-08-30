@@ -32,21 +32,27 @@ class SessionTest extends TestCase
     }
 
     /**
-     * Below annotations are for PHPUnit < 9.0
+     * NOTE: Why not use `@expectedException` or `$this->expectWarning()` ?
      *
-     * @expectedException PHPUnit_Framework_Error_Warning
-     * @expectedExceptionMessage The session not yet started (Ignoring)
+     * Expecting E_WARNING and E_USER_WARNING is deprecated and will no longer be possible in PHPUnit 10.
+     *
+     * @see https://phpunit.de/announcements/phpunit-10.html
+     * @see https://codeseekah.com/2023/03/01/testing-warnings-in-phpunit-9/
      */
     public function testPolluteSessionNotStarted()
     {
-        // For PHPUnit >= 9.0
-        if (method_exists($this, 'expectWarning')) {
-            $this->expectWarning();
-            $this->expectWarningMessage('The session not yet started (Ignoring)');
-        }
+        $errored = null;
+        set_error_handler(function($errno, $errstr) use (&$errored) {
+            $errored = [$errno, $errstr];
+            restore_error_handler();
+        });
         
         $this->object = new Session;
         $this->object->pollute();
+
+        list($errno, $errstr) = $errored;
+        $this->assertEquals(E_USER_WARNING, $errno);
+        $this->assertEquals('The session not yet started (Ignoring)', $errstr);
     }
 
     /**
