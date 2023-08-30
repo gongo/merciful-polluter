@@ -8,7 +8,7 @@
         "php": ">=5.4"
     },
     "require-dev": {
-        "phpunit/phpunit": "^9 || ^7.5 || ^4.8",
+        "phpunit/phpunit": "^9 || ^7.5 || ^4.8.35",
         "php-coveralls/php-coveralls": "*"
     },
     "license": "MIT",
