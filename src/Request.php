@@ -112,7 +112,9 @@ class Request extends Base
      */
     protected function getInjectVariables()
     {
-        return str_split(strtolower(ini_get('variables_order')));
+        return str_split(
+            strtolower(ini_get('variables_order')) // @phpstan-ignore argument.type
+        );
     }
 
     /**
