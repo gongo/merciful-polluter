@@ -120,7 +120,7 @@ class Request extends Base
      *
      * This method is **bang** .
      *
-     * @param string[] $theVariables
+     * @param mixed[] $theVariables
      * @return void
      */
     private function addSlashesRecursive(&$theVariables)
@@ -134,7 +134,7 @@ class Request extends Base
     }
 
     /**
-     * @param string[] $theVariables
+     * @param mixed[] $theVariables
      * @return void
      */
     protected function injectToGlobal(array $theVariables)
