@@ -20,6 +20,7 @@ class Session extends Base
     }
 
     /**
+     * @param mixed[] $theVariables
      * @return void
      */
     protected function injectToGlobal(array $theVariables)

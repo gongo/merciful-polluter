@@ -112,7 +112,9 @@ class Request extends Base
      */
     protected function getInjectVariables()
     {
-        return str_split(strtolower(ini_get('variables_order')));
+        return str_split(
+            strtolower(ini_get('variables_order')) // @phpstan-ignore argument.type
+        );
     }
 
     /**
@@ -120,7 +122,7 @@ class Request extends Base
      *
      * This method is **bang** .
      *
-     * @param string[] $theVariables
+     * @param mixed[] $theVariables
      * @return void
      */
     private function addSlashesRecursive(&$theVariables)
@@ -134,7 +136,7 @@ class Request extends Base
     }
 
     /**
-     * @param string[] $theVariables
+     * @param mixed[] $theVariables
      * @return void
      */
     protected function injectToGlobal(array $theVariables)
