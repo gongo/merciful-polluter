@@ -54,7 +54,7 @@ class Request extends Base
                 if ($key === 'tmp_name') {
                     $name = $field;
                 } else {
-                    $name = "${field}_${key}";
+                    $name = "{$field}_{$key}";
                 }
                 $values[$name] = $value;
             }
