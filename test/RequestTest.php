@@ -257,9 +257,16 @@ class RequestTest extends TestCase
 
     private function setUpMethod()
     {
-        $this->object = $this->getMockBuilder('Gongo\MercifulPolluter\Request')
-                             ->setMethods(array('getInjectVariables'))
-                             ->getMock();
+        $targets = array('getInjectVariables');
+        $builder = $this->getMockBuilder('Gongo\MercifulPolluter\Request');
+
+        if (is_callable(array($builder, 'onlyMethods'))) { // since PHPUnit 8.3
+            $builder = $builder->onlyMethods($targets);
+        } else {
+            $builder = $builder->setMethods($targets);
+        }
+
+        $this->object = $builder->getMock();
     }
 
     private function setVariablesOrder($value)
