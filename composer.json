@@ -23,5 +23,10 @@
         "psr-4": {
             "Gongo\\MercifulPolluter\\": "src/"
         }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Gongo\\MercifulPolluter\\Test\\": "test/"
+        }
     }
 }
