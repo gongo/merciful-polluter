@@ -14,30 +14,55 @@ jobs:
 
     strategy:
       matrix:
-        php-version:
-          - 5.4
-          - 5.5
-          - 5.6
-          - 7.0
-          - 7.1
-          - 7.2
-          - 7.3
-          - 7.4
-          - 8.0
-          - 8.1
-          - 8.2
-          - 8.3
         include:
-          - php-version: 5.4
+          - php-version: '5.4'
+            phpunit-version: '^4.8.35'
+            phpunit-config: 'phpunit.xml'
             unrun-phpstan: true
-          - php-version: 5.5
+          - php-version: '5.5'
+            phpunit-version: '^4.8.35'
+            phpunit-config: 'phpunit.xml'
             unrun-phpstan: true
-          - php-version: 5.6
+          - php-version: '5.6'
+            phpunit-version: '^4.8.35'
+            phpunit-config: 'phpunit.xml'
             unrun-phpstan: true
-          - php-version: 7.0
+          - php-version: '7.0'
+            phpunit-version: '^6'
+            phpunit-config: 'phpunit.xml'
             unrun-phpstan: true
-          - php-version: 7.1
+          - php-version: '7.1'
+            phpunit-version: '^6'
+            phpunit-config: 'phpunit.xml'
             unrun-phpstan: true
+          - php-version: '7.2'
+            phpunit-version: '^8'
+            phpunit-config: 'phpunit.xml'
+            unrun-phpstan: true
+          - php-version: '7.3'
+            phpunit-version: '^9'
+            phpunit-config: 'phpunit.xml'
+            unrun-phpstan: true
+          - php-version: '7.4'
+            phpunit-version: '^9'
+            phpunit-config: 'phpunit.xml'
+            unrun-phpstan: true
+          - php-version: '8.0'
+            phpunit-version: '^9'
+            phpunit-config: 'phpunit.xml'
+            unrun-phpstan: true
+          - php-version: '8.1'
+            phpunit-version: '^10'
+            phpunit-config: 'phpunit10.xml'
+          - php-version: '8.2'
+            phpunit-version: '^11'
+            phpunit-config: 'phpunit10.xml'
+          - php-version: '8.3'
+            phpunit-version: '^11'
+            phpunit-config: 'phpunit10.xml'
+          - php-version: '8.4'
+            phpunit-version: '^11'
+            phpunit-config: 'phpunit10.xml'
 
     steps:
     - uses: actions/checkout@v3
@@ -48,12 +73,14 @@ jobs:
       with:
         php-version: ${{ matrix.php-version }}
         tools: composer
+        coverage: xdebug
     - name: Setup PHP (with composer, phpstan)
       if: ${{ ! matrix.unrun-phpstan }}
       uses: shivammathur/setup-php@v2
       with:
         php-version: ${{ matrix.php-version }}
         tools: composer, phpstan
+        coverage: xdebug
 
     - name: Get composer cache directory
       id: composer-cache
@@ -66,8 +93,16 @@ jobs:
         restore-keys: ${{ runner.os }}-composer-
     - name: Install dependencies
       run: composer install --prefer-dist --dev
-    - name: Run tests
-      run: ./vendor/bin/phpunit
+    - name: Install specific PHPUnit version
+      run: composer require --dev phpunit/phpunit:"${{ matrix.phpunit-version }}" --with-all-dependencies
+    - name: Run tests (PHPUnit 4-9)
+      if: ${{ matrix.phpunit-config == 'phpunit.xml' }}
+      run: ./vendor/bin/phpunit -c phpunit.xml
+    - name: Run tests (PHPUnit 10+)
+      if: ${{ matrix.phpunit-config == 'phpunit10.xml' }}
+      run: |
+        mkdir -p build/logs
+        ./vendor/bin/phpunit -c phpunit10.xml --coverage-clover build/logs/clover.xml
     - name: Update coverage reports
       env:
         COVERALLS_REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}

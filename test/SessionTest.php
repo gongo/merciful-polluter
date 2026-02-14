@@ -1,7 +1,6 @@
 <?php
 namespace Gongo\MercifulPolluter\Test;
 
-use PHPUnit\Framework\TestCase;
 use Gongo\MercifulPolluter\Session;
 
 /**

@@ -1,13 +1,12 @@
 <?php
 namespace Gongo\MercifulPolluter\Test;
 
-use PHPUnit\Framework\TestCase;
 use Gongo\MercifulPolluter\Request;
 
 /**
  * @backupGlobals enabled
  */
-class RequestTest extends TestCase
+class RequestTest extends \Gongo\MercifulPolluter\Test\TestCase
 {
     private $object = null;
 
@@ -257,9 +256,10 @@ class RequestTest extends TestCase
 
     private function setUpMethod()
     {
-        $this->object = $this->getMockBuilder('Gongo\MercifulPolluter\Request')
-                             ->setMethods(array('getInjectVariables'))
-                             ->getMock();
+        $this->object = $this->createMockWithMethods(
+            'Gongo\MercifulPolluter\Request',
+            array('getInjectVariables')
+        );
     }
 
     private function setVariablesOrder($value)
