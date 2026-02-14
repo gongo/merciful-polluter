@@ -54,6 +54,9 @@ jobs:
           - php-version: '8.4'
             phpunit-config: 'phpunit10.xml'
             run-phpstan: true
+          - php-version: '8.5'
+            phpunit-config: 'phpunit10.xml'
+            run-phpstan: true
 
     steps:
     - uses: actions/checkout@v3
