@@ -50,6 +50,7 @@ class Request extends Base
         foreach ($_FILES as $field => $info) {
             $values = array();
 
+            /** @var array<string, mixed> $info */
             foreach ($info as $key => $value) {
                 if ($key === 'tmp_name') {
                     $name = $field;

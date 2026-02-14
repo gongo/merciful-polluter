@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit bootstrap="test/bootstrap.php" colors="true" cacheDirectory=".phpunit.cache">
+  <coverage>
+    <report>
+      <clover outputFile="build/logs/clover.xml"/>
+    </report>
+  </coverage>
+  <testsuites>
+    <testsuite name="MercifulPolluterTests">
+      <directory>./test/</directory>
+    </testsuite>
+  </testsuites>
+  <logging/>
+  <source>
+    <include>
+      <directory>./src</directory>
+    </include>
+    <exclude>
+      <directory>./test</directory>
+    </exclude>
+  </source>
+</phpunit>
