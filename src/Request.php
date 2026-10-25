@@ -7,6 +7,15 @@ class Request extends Base
     private $magicQuotesGpc = false;
 
     /**
+     * Origins of the variables being injected in `injectToGlobal()`, e.g. array('id' => "$_GET['id']").
+     *
+     * It is not an argument of `injectToGlobal()` to keep compatibility with subclasses overriding it.
+     *
+     * @var array<string|int, string>
+     */
+    private $currentOrigins = array();
+
+    /**
      * @return void
      */
     public function pollute()
@@ -16,6 +25,7 @@ class Request extends Base
         }
         $this->injectFileToGlobal();
         $this->injectEGPCSToGlobal();
+        $this->flushReport();
     }
 
     /**
@@ -49,6 +59,7 @@ class Request extends Base
     {
         foreach ($_FILES as $field => $info) {
             $values = array();
+            $origins = array();
 
             /** @var array<string, mixed> $info */
             foreach ($info as $key => $value) {
@@ -58,9 +69,10 @@ class Request extends Base
                     $name = "{$field}_{$key}";
                 }
                 $values[$name] = $value;
+                $origins[$name] = $this->formatOrigin('$_FILES', array($field, $key));
             }
 
-            $this->injectToGlobal($values);
+            $this->injectToGlobalWithOrigins($values, $origins);
         }
     }
 
@@ -88,19 +100,19 @@ class Request extends Base
 
             switch ($name) {
                 case 'e':
-                    $this->injectToGlobal($_ENV);
+                    $this->injectSuperGlobalToGlobal($_ENV, '$_ENV');
                     break;
                 case 'g':
-                    $this->injectToGlobal($_GET);
+                    $this->injectSuperGlobalToGlobal($_GET, '$_GET');
                     break;
                 case 'p':
-                    $this->injectToGlobal($_POST);
+                    $this->injectSuperGlobalToGlobal($_POST, '$_POST');
                     break;
                 case 'c':
-                    $this->injectToGlobal($_COOKIE);
+                    $this->injectSuperGlobalToGlobal($_COOKIE, '$_COOKIE');
                     break;
                 case 's':
-                    $this->injectToGlobal($_SERVER);
+                    $this->injectSuperGlobalToGlobal($_SERVER, '$_SERVER');
                     break;
             }
 
@@ -138,6 +150,35 @@ class Request extends Base
 
     /**
      * @param mixed[] $theVariables
+     * @param string $theSuperGlobal e.g. '$_GET'
+     * @return void
+     */
+    private function injectSuperGlobalToGlobal(array $theVariables, $theSuperGlobal)
+    {
+        $origins = array();
+        foreach (array_keys($theVariables) as $key) {
+            $origins[$key] = $this->formatOrigin($theSuperGlobal, array($key));
+        }
+
+        $this->injectToGlobalWithOrigins($theVariables, $origins);
+    }
+
+    /**
+     * @param mixed[] $theVariables
+     * @param array<string|int, string> $theOrigins
+     * @return void
+     */
+    private function injectToGlobalWithOrigins(array $theVariables, array $theOrigins)
+    {
+        $this->currentOrigins = $theOrigins;
+        $this->injectToGlobal($theVariables);
+        $this->currentOrigins = array();
+    }
+
+    /**
+     * Subclasses overriding this without calling the parent are not reported.
+     *
+     * @param mixed[] $theVariables
      * @return void
      */
     protected function injectToGlobal(array $theVariables)
@@ -152,6 +193,11 @@ class Request extends Base
             } else {
                 $GLOBALS[$name] = $value;
             }
+
+            $this->collectInjectedVariable(
+                $name,
+                isset($this->currentOrigins[$name]) ? $this->currentOrigins[$name] : null
+            );
         }
     }
 
