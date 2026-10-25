@@ -17,9 +17,12 @@ class Session extends Base
         }
 
         $this->injectToGlobal($_SESSION);
+        $this->flushReport();
     }
 
     /**
+     * Subclasses overriding this without calling the parent are not reported.
+     *
      * @param mixed[] $theVariables
      * @return void
      */
@@ -32,6 +35,8 @@ class Session extends Base
 
             $GLOBALS[$name] = $value;
             $_SESSION[$name] =& $GLOBALS[$name];
+
+            $this->collectInjectedVariable($name, $this->formatOrigin('$_SESSION', array($name)));
         }
     }
 }

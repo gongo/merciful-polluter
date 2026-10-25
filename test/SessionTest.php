@@ -30,6 +30,31 @@ class SessionTest extends TestCase
         $this->assertEquals('99999', $_SESSION['userId']);
     }
 
+    public function testPolluteReport()
+    {
+        $this->object = new Session;
+
+        session_start();
+
+        $_SESSION['userId'] = '1234';
+        $_SESSION['_GET'] = 'Cracked';
+
+        $calls = array();
+        $this->object->setReporter(function (array $injectedVariables) use (&$calls) {
+            $calls[] = $injectedVariables;
+        });
+        $this->object->pollute();
+
+        $this->assertEquals(
+            array(
+                array(
+                    array('name' => 'userId', 'origin' => "\$_SESSION['userId']"),
+                ),
+            ),
+            $calls
+        );
+    }
+
     /**
      * NOTE: Why not use `@expectedException` or `$this->expectWarning()` ?
      *
